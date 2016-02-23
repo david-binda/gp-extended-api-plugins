@@ -86,7 +86,7 @@ class GP_Route_Translation_Extended extends GP_Route_Main {
 		$output = array();
 		foreach( gp_post( 'translation', array() ) as $original_id => $translations ) {
 			$data = compact('original_id');
-			$data['user_id'] = GP::$user->current()->id;
+			$data['user_id'] = get_current_user_id();
 			$data['translation_set_id'] = $translation_set->id;
 
 			foreach( range( 0, GP::$translation->get_static( 'number_of_plural_translations' ) ) as $i ) {
@@ -173,17 +173,11 @@ class GP_Route_Translation_Extended extends GP_Route_Main {
 	}
 }
 
-class GP_Translation_Extended_API_Loader extends GP_Plugin {
-	function __construct() {
-		parent::__construct();
-		$this->init_new_routes();
-	}
+add_action( 'gp_init', 'gp_translation_exended_api_init' );
 
-	function init_new_routes() {
-		GP::$router->add( '/translations/-new', array( 'GP_Route_Translation_Extended', 'save_translation' ), 'post' );
-		GP::$router->add( '/translations/(\d+)/-set-status', array( 'GP_Route_Translation_Extended', 'set_status' ), 'post' );
-		GP::$router->add( '/translations/-query-by-originals', array( 'GP_Route_Translation_Extended', 'translations_get_by_originals' ), 'post' );
-	}
+function gp_translation_exended_api_init() {
+	
+GP::$router->add( '/translations/-new', array( 'GP_Route_Translation_Extended', 'save_translation' ), 'post' );
+	GP::$router->add( '/translations/(\d+)/-set-status', array( 'GP_Route_Translation_Extended', 'set_status' ), 'post' );
+	GP::$router->add( '/translations/-query-by-originals', array( 'GP_Route_Translation_Extended', 'translations_get_by_originals' ), 'post' );
 }
-
-GP::$plugins->translation_extended_api = new GP_Translation_Extended_API_Loader();
