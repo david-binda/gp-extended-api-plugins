@@ -177,7 +177,7 @@ add_action( 'gp_init', 'gp_translation_exended_api_init' );
 
 function gp_translation_exended_api_init() {
 	
-GP::$router->add( '/translations/-new', array( 'GP_Route_Translation_Extended', 'save_translation' ), 'post' );
+	GP::$router->add( '/translations/-new', array( 'GP_Route_Translation_Extended', 'save_translation' ), 'post' );
 	GP::$router->add( '/translations/(\d+)/-set-status', array( 'GP_Route_Translation_Extended', 'set_status' ), 'post' );
 	GP::$router->add( '/translations/-query-by-originals', array( 'GP_Route_Translation_Extended', 'translations_get_by_originals' ), 'post' );
 }
